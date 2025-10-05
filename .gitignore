@@ -1,0 +1,37 @@
+# =========================
+# Root / Main Project
+# =========================
+node_modules/
+.env
+.DS_Store
+dist/
+build/
+.vscode/
+.idea/
+*.log
+
+# =========================
+# Server Folder
+# =========================
+/server/node_modules/
+/server/.env
+/server/dist/
+/server/build/
+/server/*.log
+
+# =========================
+# Client Folder
+# =========================
+/client/node_modules/
+/client/.env
+/client/dist/
+/client/build/
+/client/*.log
+
+# =========================
+# Optional OS / Editor files
+# =========================
+*.swp
+*.swo
+Thumbs.db
+*.bak
