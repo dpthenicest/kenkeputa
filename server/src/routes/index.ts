@@ -1,9 +1,14 @@
 import { Router } from "express";
-import { helloWorld } from "../controllers/helloController";
+import authRoutes from "./auth.routes";
+import productRoutes from "./product.routes";
+import cartRoutes from "./cart.routes";
+import orderRoutes from "./order.routes";
 
 const router = Router();
 
-router.get("/", (req, res) => res.send("Welcome to Express + TypeScript API"));
-router.get("/hello", helloWorld);
+router.use("/auth", authRoutes);
+router.use("/products", productRoutes);
+router.use("/cart", cartRoutes);
+router.use("/orders", orderRoutes);
 
 export default router;
