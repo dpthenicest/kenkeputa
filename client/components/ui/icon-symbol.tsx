@@ -18,6 +18,9 @@ const MAPPING = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'bag.fill': 'shopping-bag', // 🛍️ Products
+  'cart.fill': 'shopping-cart', // 🛒 Cart
+  'cube.box.fill': 'inventory', // 📦 Orders
 } as IconMapping;
 
 /**

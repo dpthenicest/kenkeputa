@@ -40,7 +40,7 @@ export const orderService = {
         data: {
           userId,
           totalAmount,
-          status: OrderStatus.PAID,
+          status: OrderStatus.PENDING,
           orderItems: {
             create: cart.cartItems.map((item) => ({
               productId: item.productId,
