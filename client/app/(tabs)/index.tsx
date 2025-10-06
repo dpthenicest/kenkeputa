@@ -201,9 +201,13 @@ export default function ProductsScreen() {
             </TouchableOpacity>
           )}
 
-          {user && (
+          {user ? (
             <TouchableOpacity onPress={() => setLogoutModal(true)}>
               <Octicons name="sign-out" size={22} color={theme.text} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => router.push('/login')}>
+              <Octicons name="sign-in" size={22} color={theme.text} />
             </TouchableOpacity>
           )}
         </View>

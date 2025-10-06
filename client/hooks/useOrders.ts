@@ -1,6 +1,7 @@
 // hooks/useOrders.ts
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@/context/AuthContext";
+import { API_BASE_URL } from "../constants/api";
 
 interface Order {
   id: number;
@@ -21,9 +22,6 @@ interface Order {
   }[];
 }
 
-const API_BASE = "http://localhost:5000/api";
-
-
 export function useOrders() {
   const { user, token } = useAuthContext();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -35,7 +33,7 @@ export function useOrders() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${API_BASE}/orders`, {
+      const res = await fetch(`${API_BASE_URL}/orders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -54,7 +52,7 @@ export function useOrders() {
 
   const createOrder = async (cartId: number) => {
     if (!token) throw new Error("Not authenticated");
-    const res = await fetch(`${API_BASE}/orders`, {
+    const res = await fetch(`${API_BASE_URL}/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +69,7 @@ export function useOrders() {
   const updateOrderStatus = async (orderId: number, status: string) => {
     if (!token) throw new Error("Not authenticated");
     const res = await fetch(
-      `${API_BASE}/orders/${orderId}/status`,
+      `${API_BASE_URL}/orders/${orderId}/status`,
       {
         method: "PUT",
         headers: {

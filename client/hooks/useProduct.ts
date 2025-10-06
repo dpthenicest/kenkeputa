@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { API_BASE_URL } from "../constants/api";
 
 export interface Product {
   id: number;
@@ -18,7 +19,7 @@ export interface ProductQuery {
   limit?: number;
 }
 
-const API_BASE = "http://localhost:5000/api/products";
+const API_BASE = `${API_BASE_URL}/products`;
 
 export const useProduct = () => {
   const [products, setProducts] = useState<Product[]>([]);

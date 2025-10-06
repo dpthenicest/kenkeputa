@@ -1,9 +1,20 @@
 import { useState, useContext } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  ActivityIndicator,
+  Modal,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemeContext } from "@/context/ThemeContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "expo-router";
+import { Octicons } from "@expo/vector-icons";
 
 export default function Register() {
   const [fullName, setFullName] = useState("");
@@ -13,12 +24,25 @@ export default function Register() {
   const { theme, colorScheme } = useContext(ThemeContext);
   const router = useRouter();
 
+  // Modal states
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalType, setModalType] = useState<"success" | "error" | null>(null);
+
   const handleRegister = async () => {
     try {
-      await register( fullName, email, password );
-      router.replace("/login");
+      await register(fullName, email, password);
+      setModalType("success");
+      setModalMessage("Account created successfully!");
+      // setModalVisible(true);
+      // setTimeout(() => setModalVisible(false), 500);
+      // setTimeout(() => router.replace("/login"), 2500);
     } catch (error) {
       console.error(error);
+      setModalType("error");
+      setModalMessage("Registration failed. Try again.");
+      setModalVisible(true);
+      setTimeout(() => setModalVisible(false), 10000);
     }
   };
 
@@ -26,6 +50,49 @@ export default function Register() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Success/Error Modal */}
+      <Modal
+        transparent
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View
+            style={[
+              styles.modalContent,
+              { backgroundColor: modalType === "success" ? "#d1f7c4" : "#ffd6d6" },
+            ]}
+          >
+            <View style={styles.modalRow}>
+              <Octicons
+                name={modalType === "success" ? "check-circle-fill" : "alert"}
+                size={22}
+                color={modalType === "success" ? "green" : "red"}
+              />
+              <Text
+                style={[
+                  styles.modalText,
+                  { color: modalType === "success" ? "green" : "red" },
+                ]}
+              >
+                {modalMessage}
+              </Text>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Octicons name="x" size={20} color="gray" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Store Logo */}
+      <Image
+        source={require("@/assets/images/stores_logo.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+
       <Text style={styles.title}>Create Account</Text>
 
       <TextInput
@@ -63,7 +130,10 @@ export default function Register() {
       </Pressable>
 
       <Pressable onPress={() => router.push("/login")}>
-        <Text style={styles.linkText}>Already have an account? <Text style={{color: 'skyblue'}}>Login</Text></Text>
+        <Text style={styles.linkText}>
+          Already have an account?{" "}
+          <Text style={{ color: "skyblue" }}>Login</Text>
+        </Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -77,6 +147,11 @@ const createStyles = (theme: any, colorScheme: any) =>
       alignItems: "center",
       justifyContent: "center",
       padding: 20,
+    },
+    logo: {
+      width: 100,
+      height: 100,
+      marginBottom: 10,
     },
     title: {
       fontSize: 26,
@@ -110,5 +185,35 @@ const createStyles = (theme: any, colorScheme: any) =>
       color: theme.text,
       marginTop: 10,
       fontSize: 16,
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: "flex-start",
+      alignItems: "center",
+      marginTop: 40,
+    },
+    modalContent: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      borderRadius: 8,
+      width: "90%",
+      shadowColor: "#000",
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 4,
+    },
+    modalRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      width: "100%",
+    },
+    modalText: {
+      flex: 1,
+      fontSize: 16,
+      marginLeft: 10,
     },
   });
